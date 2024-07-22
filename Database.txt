@@ -1,0 +1,342 @@
+CREATE TABLE employees
+(
+eid int PRIMARY KEY not null,
+eemail varchar(50) not null,
+eaddress varchar(100) not null,
+ejobtype varchar(50) not null,
+essn varchar(40) not null,
+edegree varchar(100) not null,
+ebirthday date not null,
+emaritalstatus varchar(40),
+eposition varchar(40),
+eworkpermit varchar(50) not null,
+esalary int not null,
+egender varchar(20) not null,
+supervisorid int not null,
+ename varchar(50) not null,
+dno1 int not null
+)
+
+
+insert into employees values (20100,'20101@rayah.com','aswan','supervisor','123456789','High School','6/april/2002','single','supervisor','123456789',5000, 'male',20100,'Mark')
+insert into employees values (20101,'201001@rayah.com','aswan','worker','111456789','High School','6/april/2002','single','worker','1113456789',3000, 'male',20100,'Ahmed')
+insert into employees values (20102,'20102@rayah.com','Cairo','worker','222456789','High School','5/July/2000','Married','worker','222456789',3000, 'male',20100,'Mohamed')
+insert into employees values (20103,'20103@rayah.com','Mansoura','worker','333456789','High School','7/may/1991','single','worker','333456789',4000, 'Female',20100,'Mona')
+insert into employees values (20104,'20104@rayah.com','aswan','worker','444456789','High School','11/july/2001','Married','worker','444456789',3000, 'male',20104,'Mostafa')
+insert into employees values (20105,'20105@rayah.com','Qena','worker','555556789','Commerce School','4/december/1995','single','worker','666666789',4000, 'Female',20100,'jaklen')
+insert into employees values (20106,'20106@rayah.com','Alex','worker','122456789','High School','8/december/1990','single','worker','122456789',5000, 'male',20100,'Marwan')
+insert into employees values (20107,'20107@rayah.com','Cairo','worker','133456789','High School','11/august/1996','single','worker','133456789',3500, 'male',20100,'Yossif')
+insert into employees values (20108,'20108@rayah.com','Alex','worker','144456789','High School','9/april/2001','single','worker','144456789',4000, 'male',20100,'Shehab')
+insert into employees values (20109,'20109@rayah.com','aswan','worker','155456789','High School','2/august/2002','single','worker','155456789',5000, 'male',20100,'AHmed')
+
+select * from employees
+
+describe employees
+
+alter table employees
+add constraint fkesuper foreign key (supervisorid) references employees (eid)
+
+alter table employees
+add constraint fkedno foreign key (dno1) references department (dno)
+
+CREATE TABLE employeephone
+(
+eid1 int not null,
+ephonenumber varchar(20) not null
+)
+
+insert into employeephone values (20100,'01200000000')
+insert into employeephone values (20101,'01200000001')
+insert into employeephone values (20102,'01200000002')
+insert into employeephone values (20103,'01200000003')
+insert into employeephone values (20104,'01200000004')
+insert into employeephone values (20105,'01200000005')
+insert into employeephone values (20106,'01200000006')
+insert into employeephone values (20107,'01200000007')
+insert into employeephone values (20108,'01200000008')
+insert into employeephone values (20109,'01200000009')
+
+select * from employeephone
+
+
+alter table employeephone
+add constraint fkepe foreign key (eid) references employees (eid)
+add constraint pkep primary key (eid,ephonenumber)
+
+describe employeephone
+
+CREATE TABLE servedby
+(
+eid2 int not null,
+cid1 int not null
+)
+
+insert into servedby values (20101,10000)
+insert into servedby values (20102,10002)
+insert into servedby values (20103,10003)
+insert into servedby values (20104,10004)
+insert into servedby values (20105,10001)
+insert into servedby values (20106,10006)
+insert into servedby values (20107,10007)
+insert into servedby values (20108,10008)
+insert into servedby values (20109,10009)
+insert into servedby values (20101,10005)
+
+alter table servedby
+add constraint fksb foreign key (eid2) references employees (eid)
+add constraint fksb2 foreign key (cid1) references customer(cid)
+add constraint pksb primary key (eid2,cid1)
+
+describe servedby
+
+CREATE TABLE customer
+(
+cid int PRIMARY KEY not null,
+cstreetname varchar(50) not null,
+cbuildingno int not null,
+cfloorno int not null,
+cemail varchar(50),
+cname varchar(50)
+)
+
+insert into customer values (10000,'nasr',2,1,'myemail@yahoo.com','Kareem')
+insert into customer values (10001,'elmqaber',4,8,'myemail1@yahoo.com','Ahmed')
+insert into customer values (10002,'elbrkaa',5,4,'myemail2@yahoo.com','mark')
+insert into customer values (10003,'elmtar',7,2,'myemail3@yahoo.com','mohamed')
+insert into customer values (10004,'essam roushdy',4,6,'myemail4@yahoo.com','mostafa')
+insert into customer values (10005,'abd elaziz',6,2,'myemail5@yahoo.com','marwan')
+insert into customer values (10006,'mohamed ali',3,1,'myemail6@yahoo.com','khald')
+insert into customer values (10007,'elakkad',7,3,'myemail7@yahoo.com','osama')
+insert into customer values (10008,'ahmed kamal',8,3,'myemai8@yahoo.com','osman')
+insert into customer values (10009,'abd elmenaem',4,4,'myemail9@yahoo.com','yousef')
+
+select * from customer
+
+describe customer
+
+CREATE TABLE soldby
+(
+pcode1 int not null,
+eid3 int not null
+)
+
+insert into soldby values (1,20104)
+insert into soldby values (2,20104)
+insert into soldby values (3,20104)
+insert into soldby values (4,20104)
+insert into soldby values (6,20105)
+insert into soldby values (5,20105)
+insert into soldby values (7,20105)
+insert into soldby values (8,20105)
+insert into soldby values (9,20105)
+insert into soldby values (10,20105)
+
+select* from soldby
+
+
+alter table soldby
+add constraint fksbe foreign key (eid3) references employees (eid)
+alter table soldby
+add constraint fksbp foreign key (pcode1) references products (pcode)
+alter table soldby
+add constraint pksb2 primary key (pcode1,eid3)
+
+
+describe soldby
+
+CREATE TABLE products
+(
+pcode int PRIMARY KEY not null,
+porigin varchar(50) not null,
+pname varchar(100) not null,
+pstock int not null,
+pdepartment varchar(50) not null,
+pexpirydate date,
+pprice int not null,
+dno2 int not null
+)
+
+insert into products values (1,'egypt','rice',100,'grocery','6/july/2030',20,5)
+insert into products values (2,'egypt','Pasta',200,'grocery','2/october/2030',15,5)
+insert into products values (3,'egypt','beans',140,'grocery','1/august/2030',10,5)
+insert into products values (4,'egypt','wheat',1000,'grocery','5/april/2030',12,5)
+insert into products values (5,'Saudi Arabia','chicken',100,'chicken','6/july/2022',100,1)
+insert into products values (6,'Frane','meat',100,'meat','6/july/2022',120,1)
+insert into products values (7,'egypt','Ariel',1000,'cleaning','6/july/2030',5,7)
+insert into products values (8,'egypt','Persil',1000,'cleaning','6/july/2030',10,7)
+insert into products values (9,'egypt','Milk',50,'Dairy','1/may/2022',20,4)
+insert into products values (10,'egypt','Cheese',50,'Dairy','1/may/2022',20,4)
+
+select * from products
+
+alter table products
+add constraint fkpd3ep foreign key (dno2) references department (dno)
+
+describe products
+
+CREATE TABLE purchasedit
+(
+pcode2 int not null,
+cid2 int not null
+)
+
+insert into purchasedit values (4,10001)
+insert into purchasedit values (1,10002)
+insert into purchasedit values (2,10003)
+insert into purchasedit values (3,10004)
+insert into purchasedit values (5,10005)
+insert into purchasedit values (6,10006)
+insert into purchasedit values (7,10007)
+insert into purchasedit values (8,10008)
+insert into purchasedit values (9,10009)
+insert into purchasedit values (10,10000)
+
+select* from purchasedit 
+
+alter table purchasedit
+add constraint fkpip foreign key (pcode2) references products (pcode)
+add constraint fkpic foreign key (cid2) references customer (cid)
+add constraint pkpi primary key (pcode2,cid2)
+
+describe purchasedit
+
+CREATE TABLE registeredin
+(
+pcode3 int not null,
+ino1 int not null
+)
+
+insert into registeredin values (1,0)
+insert into registeredin values (2,1)
+insert into registeredin values (3,2)
+insert into registeredin values (4,3)
+insert into registeredin values (5,4)
+insert into registeredin values (6,5)
+insert into registeredin values (7,6)
+insert into registeredin values (8,7)
+insert into registeredin values (9,8)
+insert into registeredin values (10,9)
+
+select * from registeredin
+
+alter table registeredin
+add constraint fkrip foreign key (pcode3) references products (pcode)
+add constraint fkrii foreign key (ino1) references invoices (ino)
+add constraint pkri primary key (pcode3,ino1)
+
+describe registeredin
+
+CREATE TABLE invoices
+(
+ino int PRIMARY KEY not null,
+idate date not null,
+icustomername varchar(100) not null,
+iemployeename varchar(100) not null,
+itotal int not null,
+itime varchar(50) not null,
+cid3 int not null,
+eid4 int not null
+)
+
+insert into invoices values (0000,'1/jan/2022','Kareem','Mostafa',300,'20:30',10000,20104)
+insert into invoices values (0001,'2/jan/2022','yousef','Mostafa',300,'20:30',10009,20104)
+insert into invoices values (0002,'3/jan/2022','osman','Mostafa',300,'20:30',10008,20104)
+insert into invoices values (0003,'4/jan/2022','osama','Mostafa',300,'20:30',10007,20104)
+insert into invoices values (0004,'5/jan/2022','ahmed','Mostafa',300,'20:30',10001,20104)
+insert into invoices values (0005,'1/jan/2022','mohamed','jaklen',300,'20:30',10003,20104)
+insert into invoices values (0006,'2/jan/2022','mark','jaklen',300,'20:30',10002,20105)
+insert into invoices values (0007,'3/jan/2022','mostafa','jaklen',300,'20:30',10004,20105)
+insert into invoices values (0008,'4/jan/2022','marwan','jaklen',300,'20:30',10005,20105)
+insert into invoices values (0009,'5/jan/2022','khald','jaklen',300,'20:30',10006,20105)
+
+select* from invoices
+
+
+alter table invoices
+add constraint fkinc foreign key (cid3) references customer (cid)
+add constraint fkine foreign key (eid4) references employees (eid)
+
+describe invoices
+
+CREATE TABLE customerphone
+(
+cid4 int not null,
+cphonenumber varchar(20) not null
+)
+
+insert into customerphone values (10000, 01100000000)
+insert into customerphone values (10001, 01100000001)
+insert into customerphone values (10002, 01100000002)
+insert into customerphone values (10003, 01100000003)
+insert into customerphone values (10004, 01100000004)
+insert into customerphone values (10005, 01100000005)
+insert into customerphone values (10006, 01100000006)
+insert into customerphone values (10007, 01100000007)
+insert into customerphone values (10008, 01100000008)
+insert into customerphone values (10009, 01100000009)
+
+select * from customerphone
+
+alter table customerphone
+add constraint fkci foreign key (cid4) references customer (cid)
+add constraint pkcp primary key (cid4,cphonenumber)
+
+describe customerphone
+
+CREATE TABLE delivery
+(
+deno int PRIMARY KEY not null,
+decustomername varchar(100) not null,
+decontact varchar(50) not null,
+detime varchar(20) not null,
+deinvoice int not null,
+deaddress varchar(100) not null,
+dedate date not null,
+cid5 int not null,
+eid5 int not null,
+ino2 int not null
+)
+
+insert into delivery values (0,'Kareem','01100000000','20:30',0,'nasr, building 2, floor 1', '1/jan/2022', 10000, 20101,0)
+insert into delivery values (1,'yousef','01100000001','20:30',1,'abd elmanaem, building 4, floor 4', '2/jan/2022', 10009, 20101,1)
+insert into delivery values (2,'osman','01100000002','20:30',2,'Ahmed kamal, building 8, floor 3', '3/jan/2022', 10008, 20101,2)
+insert into delivery values (3,'osama','01100000003','20:30',3,'eakkad, building 7, floor 3', '4/jan/2022', 10007, 20101,3)
+insert into delivery values (4,'khald','01100000004','20:30',4,'mohamed ali, building 3, floor 1', '5/jan/2022', 10006, 20101,4)
+insert into delivery values (5,'marwan','01100000005','20:30',5,'abd elaziz, building 6, floor 2', '1/jan/2022', 10005, 20102,5)
+insert into delivery values (6,'mostafa','01100000006','20:30',6,'essam roushdy, building 4, floor 6', '2/jan/2022', 10004, 20102,6)
+insert into delivery values (7,'mohamed','01100000007','20:30',7,'elmtar, building 7, floor 2', '3/jan/2022', 10003, 20102,7)
+insert into delivery values (8,'mark','01100000008','20:30',8,'elbrkaa, building 5, floor 4', '4/jan/2022', 10002, 20102,8)
+insert into delivery values (9,'ahmed','01100000009','20:30',9,'elmqaber, building 5, floor 8', '5/jan/2022', 10001, 20102,9)
+select* from delivery
+
+alter table delivery
+add constraint fkdec foreign key (cid5) references customer (cid)
+add constraint fkdee foreign key (eid5) references employees (eid)
+add constraint fkdei foreign key (ino2) references invoices (ino)
+
+describe delivery
+
+CREATE TABLE department
+(
+dno int PRIMARY KEY not null,
+dname varchar(50) not null,
+eid6 int not null
+)
+
+insert into department values (0,'management', 20100)
+insert into department values (1,'Meat Supply', 20101)
+insert into department values (2,'Casheir', 20102)
+insert into department values (3,'Delivery', 20103)
+insert into department values (4,'Dairy Supply',20104)
+insert into department values (5,'Grocery Supply',20105)
+insert into department values (6,'Customer Relations',20106)
+insert into department values (7,'Cleaning-Tool Supply',20107)
+insert into department values (8,'Cleaning Crew',20108)
+insert into department values (9,'Marketing',20109)
+
+select * from department
+
+alter table department
+add constraint fkdep foreign key (eid6) references employees (eid)
+
+describe departments
